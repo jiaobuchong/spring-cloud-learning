@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.dn</groupId>
-    <artifactId>chapter3-eureka-consumer-demo</artifactId>
+    <artifactId>chapter3-eureka-ribbon-consumer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>chapter3-eureka-consumer-demo</name>
+    <name>chapter3-eureka-ribbon-consumer</name>
     <description>customer project for Spring Boot</description>
 
     <properties>
@@ -33,16 +33,11 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
-<!--        负载均衡-->
+        <!--引入ribbon的jar-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-        </dependency>
-
-<!--        重试机制-->
-        <dependency>
-            <groupId>org.springframework.retry</groupId>
-            <artifactId>spring-retry</artifactId>
+            <version>1.4.2.RELEASE</version>
         </dependency>
 
         <dependency>

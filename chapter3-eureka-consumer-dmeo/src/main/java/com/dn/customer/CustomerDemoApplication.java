@@ -18,6 +18,7 @@ public class CustomerDemoApplication {
 
 
 
+    // LoadBalanced 会去获取服务实例，使用 Ribbon 进行负载均衡
     @Bean
     @LoadBalanced
     public RestTemplate template(){

@@ -26,6 +26,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <module>chapter3-eureka-consumer-dmeo</module>
         <module>chapter3-eureka-demo-peer1</module>
         <module>chapter3-eureka-demo-peer2</module>
+        <module>chapter3-eureka-ribbon-consumer</module>
     </modules>
 
     <build>
