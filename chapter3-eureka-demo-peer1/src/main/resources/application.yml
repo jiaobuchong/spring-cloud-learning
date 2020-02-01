@@ -1,0 +1,14 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: helloserver
+
+
+
+
+ # 注册示例到 eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10000/eureka/,http://127.0.0.1:10001/eureka/,http://127.0.0.1:10002/eureka/
