@@ -27,6 +27,8 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <module>chapter3-eureka-demo-peer1</module>
         <module>chapter3-eureka-demo-peer2</module>
         <module>chapter3-eureka-ribbon-consumer</module>
+        <module>chapter3-hystrix</module>
+        <module>chapter3-hystrix-metric-dashboard</module>
     </modules>
 
     <build>
