@@ -29,6 +29,9 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <module>chapter3-eureka-ribbon-consumer</module>
         <module>chapter3-hystrix</module>
         <module>chapter3-hystrix-metric-dashboard</module>
+        <module>chapter3-i-feign</module>
+        <module>chapter3-i-feign-diy</module>
+        <module>chapter3-j-zuul</module>
     </modules>
 
     <build>
