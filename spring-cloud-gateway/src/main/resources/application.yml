@@ -3,21 +3,29 @@ spring:
     name: spring-cloud-gateway
   cloud:
     gateway:
+      #      不同的 id 对应不同的路由器，匹配到某一个就会走某个路由
       routes:
         - id: config_route
           predicates:
             - Path=/gateway/**
           filters:
             - StripPrefix=1
-          uri: http://localhost:8082/
+          uri: http://localhost:8001/
         - id: cookie_route
           predicates:  # nginx  location ~
-            #- Cookie=name,mic
+            - Cookie=name,mic
+          #            - Path=/define/**
+          #            - Auth=Authorization,token
+          #          filters:
+          #            - StripPrefix=1
+          uri: https://www.baidu.com/
+        - id: my_diy_predicate_route
+          predicates:
             - Path=/define/**
             - Auth=Authorization,token
           filters:
             - StripPrefix=1
-          uri: https://www.gupaoedu.com
+          uri: https://www.baidu.com/
 
 server:
   port: 8080

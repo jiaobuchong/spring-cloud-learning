@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.ThreadLocalRandom;
 
 @RestController
-@RequestMapping("/gateway")
-public class GatewayTestController {
+@RequestMapping("/order")
+public class OrderController {
 
-    @GetMapping("/test")
+    @GetMapping("/create")
     public String test() {
-        return "gateway test " + ThreadLocalRandom.current().nextInt();
+        return "create order id: " + ThreadLocalRandom.current().nextInt();
     }
 }
