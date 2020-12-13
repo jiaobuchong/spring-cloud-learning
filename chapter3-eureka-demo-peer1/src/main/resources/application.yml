@@ -11,4 +11,6 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://127.0.0.1:10000/eureka/,http://127.0.0.1:10001/eureka/,http://127.0.0.1:10002/eureka/
+#      集群配置
+#      defaultZone: http://127.0.0.1:10000/eureka/,http://127.0.0.1:10001/eureka/,http://127.0.0.1:10002/eureka/
+      defaultZone: http://127.0.0.1:10000/eureka/
