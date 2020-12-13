@@ -1,6 +1,9 @@
 spring:
   application:
     name: spring-cloud-gateway
+  redis:
+    host: localhost
+    port: 6379
   cloud:
     gateway:
       #      不同的 id 对应不同的路由器，匹配到某一个就会走某个路由
@@ -10,6 +13,7 @@ spring:
             - Path=/gateway/**
           filters:
             - StripPrefix=1
+            - GpDefine=Hello Mic # 自定义的 filter
           uri: http://localhost:8001/
         - id: cookie_route
           predicates:  # nginx  location ~
@@ -26,7 +30,24 @@ spring:
           filters:
             - StripPrefix=1
           uri: https://www.baidu.com/
-
+          # 通过 eureka-client 进行服务发现 load balance
+        - id: lb_route
+          predicates:
+            - Path=/lb/**
+          filters:
+            - StripPrefix=1
+          # http://localhost:8080/lb/order/create
+          uri: lb://helloserver
+      # 服务发现全局配置
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
 server:
   port: 8080
 
+# 服务发现的地址
+eureka:
+  client:
+    service-url:
+      defaultZone : http://127.0.0.1:10000/eureka/
