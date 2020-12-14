@@ -13,7 +13,7 @@ spring:
             - Path=/gateway/**
           filters:
             - StripPrefix=1
-            - GpDefine=Hello Mic # 自定义的 filter
+            - GpDefine=Hello Mic # 自定义的 filter，第一个值或第二个值按顺序向后排列
           uri: http://localhost:8001/
         - id: cookie_route
           predicates:  # nginx  location ~
@@ -37,6 +37,23 @@ spring:
           filters:
             - StripPrefix=1
           # http://localhost:8080/lb/order/create
+          uri: lb://helloserver
+        - id: ratelimiter_route
+          predicates:
+            - Path=/ratelimiter/**
+          filters:
+            - StripPrefix=1
+            # filter 定义的第二种写法
+            - name: RequestRateLimiter
+              args:
+                # 对于空的 key 是否进行拒绝
+                deny-empty-key: true
+                # 针对哪个 key 去进行拦截
+                keyResolver: '#{@ipAddressKeyResolver}'
+                # 令牌桶生成的速度，也就是每秒的请求数
+                redis-rate-limiter.replenishRate: 1
+                # 令牌桶容量，比如在服务低峰的时候，还会有很多令牌往桶里放，就会堆积
+                redis-rate-limiter.burstCapacity: 2
           uri: lb://helloserver
       # 服务发现全局配置
       discovery:

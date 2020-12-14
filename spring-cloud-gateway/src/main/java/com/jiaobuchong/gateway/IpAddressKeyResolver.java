@@ -7,10 +7,10 @@ import reactor.core.publisher.Mono;
 
 
 @Component
-public class IpAddressKeyResolver implements KeyResolver{
+public class IpAddressKeyResolver implements KeyResolver {
 
     @Override
     public Mono<String> resolve(ServerWebExchange exchange) {
-        return Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
+         return Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
     }
 }
