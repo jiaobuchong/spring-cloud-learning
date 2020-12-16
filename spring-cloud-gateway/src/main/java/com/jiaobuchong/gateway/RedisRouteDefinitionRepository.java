@@ -16,16 +16,16 @@ import java.util.List;
 @Component
 public class RedisRouteDefinitionRepository implements RouteDefinitionRepository {
 
-    private final static String GATEWAY_ROUTE_KEY="gateway_dynamic_route";
+    private final static String GATEWAY_ROUTE_KEY = "gateway_dynamic_route";
 
     @Autowired
-    RedisTemplate<String,String> redisTemplate;
+    RedisTemplate<String, String> redisTemplate;
 
     @Override
     public Flux<RouteDefinition> getRouteDefinitions() {
-        List<RouteDefinition> routeDefinitionList=new ArrayList<>();
-        redisTemplate.opsForHash().values(GATEWAY_ROUTE_KEY).stream().forEach(route->{
-            routeDefinitionList.add(JSON.parseObject(route.toString(),RouteDefinition.class));
+        List<RouteDefinition> routeDefinitionList = new ArrayList<>();
+        redisTemplate.opsForHash().values(GATEWAY_ROUTE_KEY).stream().forEach(route -> {
+            routeDefinitionList.add(JSON.parseObject(route.toString(), RouteDefinition.class));
         });
         return Flux.fromIterable(routeDefinitionList);
     }
@@ -33,19 +33,19 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
     @Override
     public Mono<Void> save(Mono<RouteDefinition> route) {
         return route.flatMap(routeDefinition -> {
-            redisTemplate.opsForHash().put(GATEWAY_ROUTE_KEY,routeDefinition.getId(),JSON.toJSONString(routeDefinition));
+            redisTemplate.opsForHash().put(GATEWAY_ROUTE_KEY, routeDefinition.getId(), JSON.toJSONString(routeDefinition));
             return Mono.empty();
         });
     }
 
     @Override
     public Mono<Void> delete(Mono<String> routeId) {
-        return routeId.flatMap(id->{
-            if(redisTemplate.opsForHash().hasKey(GATEWAY_ROUTE_KEY,id)){
-                redisTemplate.opsForHash().delete(GATEWAY_ROUTE_KEY,id);
+        return routeId.flatMap(id -> {
+            if (redisTemplate.opsForHash().hasKey(GATEWAY_ROUTE_KEY, id)) {
+                redisTemplate.opsForHash().delete(GATEWAY_ROUTE_KEY, id);
                 return Mono.empty();
             }
-            return Mono.defer(()->Mono.error(new Exception("routeDefinition not found:"+routeId)));
+            return Mono.defer(() -> Mono.error(new Exception("routeDefinition not found:" + routeId)));
         });
     }
 }
