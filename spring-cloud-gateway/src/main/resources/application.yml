@@ -7,7 +7,7 @@ spring:
   cloud:
     gateway:
       #      不同的 id 对应不同的路由器，匹配到某一个就会走某个路由
-      routes:
+      routes :
         - id: config_route
           predicates:
             - Path=/gateway/**
