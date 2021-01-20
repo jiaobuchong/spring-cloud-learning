@@ -10,15 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.annotation.Annotation;
-import java.lang.invoke.MethodHandle;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.Proxy;
-import java.util.HashMap;
+import java.lang.reflect.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -59,8 +55,29 @@ public class JdkProxyCreator implements ProxyCreator {
                         MyMethodInfo methodInfo = new MyMethodInfo();
                         extractUrlAndMethod(method, methodInfo);
                         extractRequestParamAndBody(method, args, methodInfo);
+                        // 提取返回对象类型
+                        extractReturnInfo(method, methodInfo);
 
                         return methodInfo;
+                    }
+
+                    private void extractReturnInfo(Method method, MyMethodInfo methodInfo) {
+                        // 返回 Flux 还是 Mono
+                        // isAssignableFrom 判断类型是否某个类的子类或其本身
+                        // instanceOf 判断实例是否某个类的子类或其本身
+                        boolean isFlux = method.getReturnType().isAssignableFrom(Flux.class);
+                        methodInfo.setReturnFlux(isFlux);
+
+                        // 得到返回对象的实际类型
+                        // getGenericReturnType 带有泛型信息
+                        Class<?> elementType = extractElementType(method.getGenericReturnType());
+                        methodInfo.setReturnElementType(elementType);
+                    }
+
+                    // 得到泛型类型的实际类型
+                    private Class<?> extractElementType(Type genericReturnType) {
+                        Type[] actualTypeArguments = ((ParameterizedType) genericReturnType).getActualTypeArguments();
+                        return (Class<?>) actualTypeArguments[0];
                     }
 
                     //  得到请求的参数和 body
@@ -84,6 +101,8 @@ public class JdkProxyCreator implements ProxyCreator {
                             RequestBody requestBody = parameters[i].getAnnotation(RequestBody.class);
                             if (requestBody != null) {
                                 methodInfo.setBody((Mono<?>) args[i]);
+                                // 请求对象的类型
+                                methodInfo.setBodyElementType(extractElementType(parameters[i].getParameterizedType()));
                             }
                         }
                     }

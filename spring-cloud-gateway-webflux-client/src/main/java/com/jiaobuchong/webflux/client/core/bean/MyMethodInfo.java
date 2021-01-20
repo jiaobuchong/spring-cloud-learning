@@ -27,5 +27,14 @@ public class MyMethodInfo {
 
     private Mono<?> body;
 
+    // body 的类型
+    private Class<?> bodyElementType;
+
+    // 返回是 Mono 还是 Flux
+    private boolean returnFlux;
+
+    // 返回对象类型
+    private Class<?> returnElementType;
+
 
 }
