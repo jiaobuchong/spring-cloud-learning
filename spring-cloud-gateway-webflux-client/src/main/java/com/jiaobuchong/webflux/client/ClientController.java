@@ -38,8 +38,16 @@ public class ClientController {
                 .subscribe(System.out::println);
     }
 
+    // 处理异常信息
     @GetMapping("/exception/deal")
     public void dealException() {
+
+        String id = "6003efd688b89b64472023da1222";
+        userApi.getUser(id).subscribe(user -> {
+            System.out.println("getUserById: "+ user);
+        }, e -> {
+            System.err.println("user not found" + e.getMessage());
+        });
 
     }
 

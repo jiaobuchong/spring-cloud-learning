@@ -5,6 +5,7 @@ import com.jiaobuchong.webflux.client.core.bean.ServerInfo;
 import com.jiaobuchong.webflux.client.core.interfaces.RestHandler;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 public class WebClientRestHandler implements RestHandler {
     private WebClient client;
@@ -36,6 +37,9 @@ public class WebClientRestHandler implements RestHandler {
         } else {
             retrieve = request.retrieve();
         }
+
+        // 处理异常
+        retrieve.onStatus(httpStatus -> httpStatus.value() == 404, clientResponse -> Mono.just(new RuntimeException("Not found user")));
 
         // 处理 body
         if (methodInfo.isReturnFlux()) {
