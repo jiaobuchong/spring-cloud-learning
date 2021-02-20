@@ -36,6 +36,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <module>spring-cloud-gateway-async-servlet</module>
         <module>spring-cloud-gateway-webflux</module>
         <module>spring-cloud-gateway-webflux-client</module>
+        <module>spring-cloud-gateway-reactor</module>
     </modules>
 
     <build>
