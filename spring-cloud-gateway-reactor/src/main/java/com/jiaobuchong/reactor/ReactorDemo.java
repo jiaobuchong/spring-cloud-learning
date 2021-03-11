@@ -1,4 +1,4 @@
-package com.jiaobuchong.webflux;
+package com.jiaobuchong.reactor;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -23,7 +23,7 @@ public class ReactorDemo {
             public void onSubscribe(Subscription subscription) {
                 // 保存订阅关系，需要用它来给发布者响应
                 this.subscription = subscription;
-                // 请求一个数据
+                // 向发布者请求一个数据
                 this.subscription.request(1);
             }
 
