@@ -4,12 +4,12 @@ import java.util.concurrent.Flow;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.TimeUnit;
 
-public class FlowDemo {
+public class  FlowDemo {
     public static void main(String[] args) throws Exception {
         // 1. 定义发布者，发布的数据是 Integer
         SubmissionPublisher<Integer> publisher = new SubmissionPublisher<>();
 
-        // 2. 定义订阅者
+        // 2. 定义订阅者，其实就是消费者
         Flow.Subscriber<Integer> subscriber = new Flow.Subscriber<Integer>() {
 
             private Flow.Subscription subscription;
@@ -17,9 +17,10 @@ public class FlowDemo {
             // 建立订阅关系的时候会调用
             @Override
             public void onSubscribe(Flow.Subscription subscription) {
+                // 订阅关系管理
                 // 保存订阅关系，需要用它来给发布者响应
                 this.subscription = subscription;
-                // 请求一个数据
+                // 背压：只请求一个数据
                 this.subscription.request(1);
             }
 
@@ -57,7 +58,7 @@ public class FlowDemo {
         // 3. 发布者和订阅者建立订阅关系
         publisher.subscribe(subscriber);
 
-        // 4. 生产数据并发布
+        // 4. 生产数据并发布，可能从数据库、redis 获取数据
         for (int i = 0; i < 1000; i++) {
             // submit 是一个阻塞方法，缓冲池满了的话，发布者就会被阻塞,
             // 生成 258 条数据就被阻塞了，阻塞了之后订阅者消费一条数据，发布者才会发布一条数据
